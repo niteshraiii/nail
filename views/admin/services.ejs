@@ -1,0 +1,89 @@
+<%- include('../partials/head', { title, bodyClass: 'admin-page' }) %>
+<%- include('../partials/admin-nav', { activePage, adminUser }) %>
+<%- include('../partials/flash', { flash }) %>
+
+<main class="app-shell wide-shell">
+  <section class="page-heading" data-reveal>
+    <p class="eyebrow">Service management</p>
+    <h1>Curate the salon menu.</h1>
+    <p>Shape the Nailchemist menu with polished pricing, service notes, and active availability.</p>
+  </section>
+
+  <section class="admin-grid">
+    <form class="glass-panel form-panel" action="<%= editService ? '/admin/services/' + editService.id : '/admin/services' %>" method="POST" data-card data-reveal>
+      <div class="panel-heading">
+        <h2><%= editService ? 'Edit Service' : 'Add Service' %></h2>
+        <span class="badge">Menu</span>
+      </div>
+      <label class="field">
+        <span>Service Name</span>
+        <input type="text" name="service_name" value="<%= editService ? editService.service_name : '' %>" required>
+      </label>
+      <label class="field">
+        <span>Price</span>
+        <input type="number" name="price" min="0" step="0.01" value="<%= editService ? editService.price : '' %>" required>
+      </label>
+      <label class="field">
+        <span>Description</span>
+        <textarea name="description" rows="4"><%= editService ? editService.description || '' : '' %></textarea>
+      </label>
+      <label class="check-field">
+        <input type="checkbox" name="is_active" <%= !editService || editService.is_active ? 'checked' : '' %>>
+        <span>Active</span>
+      </label>
+      <button class="btn btn-primary full-width" type="submit" data-sound-click><%= editService ? 'Save Changes' : 'Add Service' %></button>
+      <% if (editService) { %>
+        <a class="text-link center-link" href="/admin/services" data-nav-link>Cancel edit</a>
+      <% } %>
+    </form>
+
+    <section class="glass-panel table-panel" data-card data-reveal>
+      <div class="panel-heading">
+        <h2>Services</h2>
+        <span class="badge"><%= services.length %> total</span>
+      </div>
+      <div class="responsive-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (services.length === 0) { %>
+              <tr><td colspan="4">No services yet.</td></tr>
+            <% } %>
+            <% services.forEach(function (service) { %>
+              <tr>
+                <td>
+                  <strong><%= service.service_name %></strong>
+                  <span class="table-subtext"><%= service.description || '' %></span>
+                </td>
+                <td>INR <%= Number(service.price).toFixed(0) %></td>
+                <td>
+                  <span class="status-pill <%= service.is_active ? 'status-live' : 'status-muted' %>">
+                    <%= service.is_active ? 'Active' : 'Disabled' %>
+                  </span>
+                </td>
+                <td class="table-actions">
+                  <a class="small-action" href="/admin/services?edit=<%= service.id %>" data-nav-link>Edit</a>
+                  <form action="/admin/services/<%= service.id %>/toggle" method="POST">
+                    <button class="small-action" type="submit" data-sound-click><%= service.is_active ? 'Disable' : 'Enable' %></button>
+                  </form>
+                  <form action="/admin/services/<%= service.id %>/delete" method="POST" data-confirm="Delete this service?">
+                    <button class="small-action danger" type="submit" data-sound-click>Delete</button>
+                  </form>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </section>
+</main>
+
+<%- include('../partials/footer', { scripts }) %>

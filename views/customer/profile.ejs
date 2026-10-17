@@ -1,0 +1,85 @@
+<%- include('../partials/head', { title, bodyClass: 'customer-page profile-page concept-page' }) %>
+<%- include('../partials/customer-nav', { activePage, currentUser }) %>
+<%- include('../partials/flash', { flash }) %>
+
+<main class="app-shell wide-shell profile-shell">
+  <section class="profile-center-grid">
+    <article class="profile-hero-panel" data-card data-reveal>
+      <div class="profile-avatar" data-avatar-pulse><%= currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'N' %></div>
+      <div>
+        <p class="eyebrow">Account center</p>
+        <h1>Beauty profile.</h1>
+        <p><%= currentUser.email %></p>
+      </div>
+      <div class="profile-membership-strip">
+        <span>Member</span>
+        <strong>Nailchemist Atelier</strong>
+      </div>
+    </article>
+
+    <form class="profile-edit-panel" action="/profile" method="POST" data-card data-profile-panel data-reveal>
+      <div class="panel-heading">
+        <h2>Account Details</h2>
+        <span class="badge">Private</span>
+      </div>
+      <label class="field">
+        <span>Name</span>
+        <input type="text" name="name" value="<%= currentUser.name %>" required>
+      </label>
+      <label class="field">
+        <span>Email</span>
+        <input type="email" value="<%= currentUser.email %>" disabled>
+      </label>
+      <label class="field">
+        <span>Phone</span>
+        <input type="tel" name="phone" value="<%= currentUser.phone || '' %>">
+      </label>
+
+      <button class="btn btn-primary full-width" type="submit" data-sound-click>Save Profile</button>
+    </form>
+  </section>
+
+  <section class="profile-detail-grid" data-reveal-group>
+    <article class="profile-summary-panel" data-card data-reveal>
+      <p class="eyebrow">Membership</p>
+      <h2>Premium status</h2>
+      <div class="profile-summary-row">
+        <span>Status</span>
+        <strong>Active member</strong>
+      </div>
+      <div class="profile-summary-row">
+        <span>Rewards</span>
+        <strong>Connected</strong>
+      </div>
+      <a class="text-link" href="/loyalty" data-nav-link>View loyalty</a>
+    </article>
+
+    <article class="profile-summary-panel appointment-history-panel" data-card data-reveal>
+      <p class="eyebrow">Appointments</p>
+      <h2>History</h2>
+      <div class="history-line">
+        <span></span>
+        <div>
+          <strong>Bookings</strong>
+          <p>Past and upcoming rituals remain connected to this account.</p>
+        </div>
+      </div>
+      <a class="text-link" href="/dashboard" data-nav-link>Open dashboard</a>
+    </article>
+
+    <article class="profile-summary-panel rewards-summary-panel" data-card data-reveal>
+      <p class="eyebrow">Reward summary</p>
+      <h2>Member perks</h2>
+      <div class="reward-mini-stack">
+        <span class="reward-badge">Visit stamps</span>
+        <span class="reward-badge">Unlock tiers</span>
+        <span class="reward-badge">Salon rewards</span>
+      </div>
+      <form action="/logout" method="POST">
+        <button class="text-link profile-logout-link" type="submit" data-sound-click>Logout</button>
+      </form>
+    </article>
+  </section>
+</main>
+
+<%- include('../partials/footer', { scripts }) %>

@@ -1,0 +1,25 @@
+<footer class="site-footer">
+  <div>
+    <strong>Nailchemist</strong>
+    <span>Luxury nail care, loyalty, and appointments.</span>
+  </div>
+  <a class="text-link" href="/booking" data-nav-link>Reserve a seat</a>
+</footer>
+
+<script src="/gsap/gsap.min.js"></script>
+<script src="/gsap/ScrollTrigger.min.js"></script>
+<script src="/js/utils/sound.js"></script>
+<script src="/js/animations/magic.js"></script>
+<script src="/js/animations/transitions.js"></script>
+<script src="/js/animations/cards.js"></script>
+<script src="/js/animations/hero.js"></script>
+<script src="/js/animations/dashboard.js"></script>
+<script src="/js/animations/loyalty.js"></script>
+<script src="/js/animations/booking.js"></script>
+<script src="/js/main.js"></script>
+<% const pageScripts = typeof scripts !== 'undefined' ? scripts : []; %>
+<% pageScripts.forEach(function (scriptSrc) { %>
+  <script src="<%= scriptSrc %>"></script>
+<% }); %>
+</body>
+</html>

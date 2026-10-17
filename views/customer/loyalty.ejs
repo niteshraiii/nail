@@ -1,0 +1,93 @@
+<%- include('../partials/head', { title, bodyClass: 'customer-page loyalty-page concept-page' }) %>
+<%- include('../partials/customer-nav', { activePage, currentUser }) %>
+<%- include('../partials/flash', { flash }) %>
+
+<main class="app-shell wide-shell loyalty-shell">
+  <section class="loyalty-stage" data-loyalty-page>
+    <div class="loyalty-copy" data-reveal>
+      <p class="eyebrow">Premium membership</p>
+      <h1>Your glowing loyalty card.</h1>
+      <p>Visits collect quietly toward the next Nailchemist reward, wrapped in a private boutique card.</p>
+    </div>
+
+    <article class="membership-card-wrap" data-card data-reveal>
+      <div class="membership-aura" aria-hidden="true"></div>
+     <!-- <div class="floating-reward reward-top" aria-hidden="true">Gloss perk</div>
+      <div class="floating-reward reward-right" aria-hidden="true">VIP seat</div>
+      <div class="floating-reward reward-bottom" aria-hidden="true">Reward bloom</div>-->
+      <div class="premium-card membership-card reward-card" data-unlocked="<%= loyalty.nextReward ? 'false' : 'true' %>">
+        <div class="premium-card-top">
+          <span>Nailchemist</span>
+          <span>Member No. <%= currentUser.id %></span>
+        </div>
+        <div>
+          <span class="mini-label">Visits collected</span>
+          <div class="membership-number"><span data-count-up="<%= loyalty.visitCount %>">0</span>/<%= loyalty.targetVisits %></div>
+        </div>
+        <div class="stamp-grid membership-stamps" data-stamp-grid>
+          <% for (let i = 1; i <= loyalty.targetVisits; i += 1) { %>
+            <span class="stamp <%= i <= loyalty.visitCount ? 'is-filled' : '' %>" data-stamp="<%= i %>"><%= i %></span>
+          <% } %>
+        </div>
+        <div class="premium-card-bottom">
+          <strong><%= loyalty.nextReward ? loyalty.nextReward.reward_name : 'Top tier reached' %></strong>
+          <span><%= loyalty.progress %>% filled</span>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section class="loyalty-detail-grid" data-reveal-group>
+    <article class="progress-showpiece" data-card data-reveal>
+      <div class="progress-ring large-ring" data-ring="<%= loyalty.progress %>">
+        <span><%= loyalty.progress %>%</span>
+      </div>
+      <div>
+        <h2>Reward Progress</h2>
+        <p><%= loyalty.remainingVisits %> more visits until the next unlock.</p>
+      </div>
+      <div class="progress-track large-track">
+        <div class="progress-bar" data-progress="<%= loyalty.progress %>"></div>
+      </div>
+    </article>
+
+    <article class="milestone-panel" data-card data-reveal>
+      <div class="panel-heading">
+        <h2>Milestones</h2>
+        <span class="badge">Unlock states</span>
+      </div>
+      <div class="loyalty-milestones">
+        <div class="milestone <%= loyalty.visitCount >= Math.ceil(loyalty.targetVisits * 0.25) ? 'is-unlocked' : '' %>">
+          <span class="milestone-dot">1</span>
+          <strong>First glow</strong>
+          <span><%= Math.ceil(loyalty.targetVisits * 0.25) %> visits</span>
+        </div>
+        <div class="milestone <%= loyalty.visitCount >= Math.ceil(loyalty.targetVisits * 0.5) ? 'is-unlocked' : '' %>">
+          <span class="milestone-dot">2</span>
+          <strong>Halfway shine</strong>
+          <span><%= Math.ceil(loyalty.targetVisits * 0.5) %> visits</span>
+        </div>
+        <div class="milestone <%= loyalty.visitCount >= loyalty.targetVisits ? 'is-unlocked' : '' %>">
+          <span class="milestone-dot">3</span>
+          <strong>Reward bloom</strong>
+          <span><%= loyalty.targetVisits %> visits</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="reward-state-panel" data-card data-reveal>
+      <div class="reward-state">
+        <span class="mini-label">Current Reward</span>
+        <strong><%= loyalty.currentReward ? loyalty.currentReward.reward_name : 'First reward loading' %></strong>
+      </div>
+      <div class="reward-state">
+        <span class="mini-label">Next Unlock</span>
+        <strong><%= loyalty.nextReward ? loyalty.nextReward.reward_name : 'All rewards unlocked' %></strong>
+      </div>
+    </article>
+  </section>
+
+  <div class="celebration-layer" data-celebration aria-hidden="true"></div>
+</main>
+
+<%- include('../partials/footer', { scripts }) %>

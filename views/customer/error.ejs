@@ -1,0 +1,13 @@
+<%- include('../partials/head', { title, bodyClass: 'customer-page' }) %>
+<%- include('../partials/customer-nav', { activePage, currentUser }) %>
+
+<main class="auth-shell">
+  <section class="auth-panel" data-card data-reveal>
+    <p class="eyebrow">Error</p>
+    <h1>Something went wrong.</h1>
+    <p class="muted"><%= message %></p>
+    <a class="btn btn-primary full-width" href="/" data-sound-click>Go home</a>
+  </section>
+</main>
+
+<%- include('../partials/footer', { scripts: [] }) %>

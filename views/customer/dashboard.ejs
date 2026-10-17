@@ -1,0 +1,110 @@
+<%- include('../partials/head', { title, bodyClass: 'customer-page dashboard-page concept-page' }) %>
+<%- include('../partials/customer-nav', { activePage, currentUser }) %>
+<%- include('../partials/flash', { flash }) %>
+
+<main class="app-shell wide-shell">
+  <section class="member-cockpit" data-dashboard>
+    <div class="cockpit-greeting" data-card data-reveal>
+      <div class="cockpit-copy">
+        <p class="eyebrow">Member studio</p>
+        <h1>Hello, <%= currentUser.name %>.</h1>
+        <p>Your appointments, loyalty progress, and rewards are gathered inside a calm boutique dashboard.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="/booking" data-sound-click>Book a service</a>
+          <a class="btn btn-soft" href="/loyalty" data-sound-click>Rewards</a>
+        </div>
+      </div>
+      <div class="cockpit-illustration" aria-hidden="true" data-float-object>
+        <div class="cockpit-image-frame">
+          <img src="/images/nailchemist-gel.png" alt="">
+        </div>
+        <span class="dashboard-float-card one">Next ritual</span>
+        <span class="dashboard-float-card two"><%= loyalty.progress %>% glow</span>
+      </div>
+    </div>
+
+    <div class="dashboard-stat-row" data-reveal-group>
+      <article class="stat-bubble" data-card data-reveal>
+        <span>Visits</span>
+        <strong data-count-up="<%= loyalty.visitCount %>">0</strong>
+      </article>
+      <article class="stat-bubble" data-card data-reveal>
+        <span>Glow points</span>
+        <strong data-count-up="<%= loyalty.visitCount * 100 %>">0</strong>
+      </article>
+      <article class="stat-bubble" data-card data-reveal>
+        <span>To reward</span>
+        <strong><%= loyalty.remainingVisits %></strong>
+      </article>
+    </div>
+  </section>
+
+  <section class="dashboard-composition" data-reveal-group>
+    <article class="upcoming-panel" data-card data-reveal>
+      <div class="panel-heading">
+        <h2>Upcoming Booking</h2>
+        <a class="text-link" href="/booking" data-nav-link>New booking</a>
+      </div>
+      <% if (upcoming) { %>
+        <div class="booking-summary">
+          <span class="badge"><%= upcoming.payment_id ? 'Paid' : 'Pending payment' %></span>
+          <strong><%= upcoming.service_name %></strong>
+          <span>
+            <%= new Date(upcoming.appointment_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) %>
+            at <%= String(upcoming.appointment_time).slice(0, 5) %>
+          </span>
+        </div>
+      <% } else { %>
+        <div class="booking-summary">
+          <span class="badge">Open seat</span>
+          <strong>No booking yet</strong>
+          <p class="muted">Choose a service and reserve your next Nailchemist ritual.</p>
+        </div>
+      <% } %>
+    </article>
+
+    <article class="reward-dashboard-card" data-card data-reveal>
+      <div class="premium-card dashboard-premium-card">
+        <div class="premium-card-top">
+          <span>Loyalty</span>
+          <span><%= loyalty.progress %>%</span>
+        </div>
+        <div class="progress-ring" data-ring="<%= loyalty.progress %>">
+          <span><%= loyalty.progress %>%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-bar" data-progress="<%= loyalty.progress %>"></div>
+        </div>
+        <div class="premium-card-bottom">
+          <strong><span data-count-up="<%= loyalty.visitCount %>">0</span> / <%= loyalty.targetVisits %> visits</strong>
+          <span><%= loyalty.nextReward ? loyalty.nextReward.reward_name : 'Top tier reached' %></span>
+        </div>
+      </div>
+      <div class="reward-mini-stack" aria-label="Reward previews">
+        <span class="reward-badge">Priority booking</span>
+        <span class="reward-badge">Gloss refresh</span>
+        <span class="reward-badge">Member perk</span>
+      </div>
+    </article>
+
+    <article class="quick-actions-panel" data-card data-reveal>
+      <h2>Quick Actions</h2>
+      <div class="quick-action-stack">
+        <a class="action-tile" href="/booking" data-sound-click>
+          <span>01</span>
+          <strong>Book a new ritual</strong>
+        </a>
+        <a class="action-tile" href="/loyalty" data-sound-click>
+          <span>02</span>
+          <strong>Open loyalty card</strong>
+        </a>
+        <a class="action-tile" href="/profile" data-sound-click>
+          <span>03</span>
+          <strong>Update profile</strong>
+        </a>
+      </div>
+    </article>
+  </section>
+</main>
+
+<%- include('../partials/footer', { scripts }) %>

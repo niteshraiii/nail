@@ -1,0 +1,70 @@
+:root {
+  color-scheme: light;
+
+  --color-bg: #fdf8ff;
+  --color-bg-soft: #f8f0ff;
+  --color-bg-deep: #efdfff;
+  --color-surface: rgba(255, 255, 255, 0.64);
+  --color-surface-strong: rgba(255, 255, 255, 0.86);
+  --color-primary: #ddb7ff;
+  --color-primary-strong: #c58cff;
+  --color-primary-deep: #9a5fff;
+  --color-accent: #efdfff;
+  --color-accent-soft: #ffffff;
+  --color-text: #5a2d91;
+  --color-muted: #6b5a81;
+  --color-white: #ffffff;
+  --color-danger: #b83e64;
+  --color-success: #54795f;
+  --color-line: rgba(154, 95, 255, 0.18);
+  --color-line-strong: rgba(154, 95, 255, 0.32);
+  --color-glow: rgba(197, 140, 255, 0.42);
+
+  --gradient-page:
+    radial-gradient(circle at 12% 8%, rgba(221, 183, 255, 0.58), transparent 30rem),
+    radial-gradient(circle at 86% 14%, rgba(197, 140, 255, 0.24), transparent 34rem),
+    radial-gradient(circle at 50% 92%, rgba(239, 223, 255, 0.86), transparent 35rem),
+    linear-gradient(135deg, #ffffff 0%, #fdf8ff 30%, #f8f0ff 66%, #efdfff 100%);
+  --gradient-primary: linear-gradient(135deg, #ddb7ff 0%, #c58cff 48%, #9a5fff 100%);
+  --gradient-soft: linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(248, 240, 255, 0.6));
+  --gradient-card: linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(239, 223, 255, 0.5));
+  --gradient-glow: radial-gradient(circle, rgba(197, 140, 255, 0.42), transparent 70%);
+
+  --font-heading: "Playfair Display", Georgia, serif;
+  --font-body: "Poppins", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-number: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-xs: 12px;
+  --radius-sm: 16px;
+  --radius-md: 24px;
+  --radius-lg: 34px;
+  --radius-xl: 46px;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 22px 70px rgba(90, 45, 145, 0.13);
+  --shadow-lift: 0 36px 110px rgba(90, 45, 145, 0.21);
+  --shadow-glow: 0 0 54px rgba(197, 140, 255, 0.4);
+  --shadow-inner: inset 0 1px 0 rgba(255, 255, 255, 0.78);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  --container: 1180px;
+  --nav-height: 84px;
+  --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 900px) {
+  :root {
+    --nav-height: 104px;
+  }
+}

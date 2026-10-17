@@ -1,0 +1,145 @@
+<%- include('../partials/head', { title, bodyClass: 'customer-page booking-page concept-page' }) %>
+<%- include('../partials/customer-nav', { activePage, currentUser }) %>
+<%- include('../partials/flash', { flash }) %>
+
+<%
+  const firstService = services[0] || null;
+  const serviceImages = [
+    '/images/nailchemist-gel.png',
+    '/images/nailchemist-spa.png',
+    '/images/nailchemist-art.png'
+  ];
+%>
+
+<main class="app-shell wide-shell booking-shell">
+  <section class="booking-intro" data-reveal>
+    <p class="eyebrow">Appointment booking</p>
+    <h1>Reserve your beauty ritual.</h1>
+    <p>Select the finish, choose the moment, and confirm a lavender-lit seat at Nailchemist.</p>
+  </section>
+
+  <form class="booking-experience" action="/booking" method="POST" data-booking-form>
+    <section class="booking-left-panel" data-reveal>
+      <div class="booking-stepper" aria-label="Booking progress" data-booking-stepper>
+        <div class="booking-progress-line" aria-hidden="true">
+          <span data-booking-progress></span>
+        </div>
+        <div class="stepper-track">
+          <div class="step-pill active" data-step-pill="service"><strong>01</strong><span>Service</span></div>
+          <div class="step-pill" data-step-pill="date"><strong>02</strong><span>Date</span></div>
+          <div class="step-pill" data-step-pill="slot"><strong>03</strong><span>Time</span></div>
+          <div class="step-pill" data-step-pill="confirmation"><strong>04</strong><span>Confirm</span></div>
+        </div>
+      </div>
+
+      <div class="booking-stage service-stage" data-booking-stage="service">
+        <div class="stage-heading">
+          <div>
+            <p class="eyebrow">Select Service</p>
+            <h2>Choose service.</h2>
+          </div>
+          <span class="badge"><%= services.length %> active</span>
+        </div>
+
+        <div class="service-choice-stack">
+          <% if (services.length === 0) { %>
+            <article class="service-choice-card">
+              <span class="service-price">No services</span>
+              <strong>Menu unavailable</strong>
+              <small>The salon menu is not active yet. Please check back soon.</small>
+            </article>
+          <% } %>
+          <% services.forEach(function (service, index) { %>
+            <label
+              class="service-option service-choice-card"
+              data-card
+              data-service-label="<%= service.service_name %>"
+              data-service-price="INR <%= Number(service.price).toFixed(0) %>"
+            >
+              <input type="radio" name="service_id" value="<%= service.id %>" <%= index === 0 ? 'checked' : '' %> required>
+              <span class="service-option-body">
+                <span class="service-option-image" aria-hidden="true">
+                  <img src="<%= serviceImages[index % serviceImages.length] %>" alt="">
+                </span>
+                <span class="service-choice-index">0<%= index + 1 %></span>
+                <span>
+                  <strong><%= service.service_name %></strong>
+                  <small><%= service.description || 'Premium shine, shaping, and Nailchemist detail.' %></small>
+                </span>
+                <span class="service-price">INR <%= Number(service.price).toFixed(0) %></span>
+              </span>
+            </label>
+          <% }); %>
+        </div>
+      </div>
+
+      <div class="booking-stage date-stage" data-booking-stage="date" data-calendar-panel>
+        <div class="stage-heading">
+          <div>
+            <p class="eyebrow">Choose Date</p>
+            <h2>Select your date.</h2>
+          </div>
+          <span class="badge">Step 2</span>
+        </div>
+
+        <label class="field calendar-field boutique-calendar">
+          <span>Date</span>
+          <input id="appointmentDate" type="date" name="appointment_date" min="<%= minDate %>" value="<%= minDate %>" required>
+        </label>
+      </div>
+
+      <div class="booking-stage time-stage" data-booking-stage="slot">
+        <div class="stage-heading">
+          <div>
+            <p class="eyebrow">Choose Time</p>
+            <h2>Pick a salon seat.</h2>
+          </div>
+          <span class="badge">Live availability</span>
+        </div>
+
+        <div class="field">
+          <span>Available Slots</span>
+          <input type="hidden" name="appointment_time" data-selected-slot required>
+          <div class="slot-grid" data-slot-grid data-default-slots="<%= defaultSlots.join(',') %>"></div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="booking-preview-panel" data-booking-summary data-card data-reveal>
+      <div class="preview-aura" aria-hidden="true"></div>
+      <div class="preview-card-image" aria-hidden="true">
+        <img src="/images/nailchemist-art.png" alt="">
+      </div>
+      <p class="eyebrow">Live preview</p>
+      <h2>Your appointment</h2>
+      <div class="summary-list">
+        <div class="summary-row">
+          <span>Service</span>
+          <strong data-summary-service><%= firstService ? firstService.service_name : 'Choose service' %></strong>
+        </div>
+        <div class="summary-row">
+          <span>Price</span>
+          <strong data-summary-price><%= firstService ? 'INR ' + Number(firstService.price).toFixed(0) : 'Pending' %></strong>
+        </div>
+        <div class="summary-row">
+          <span>Date</span>
+          <strong data-summary-date><%= minDate %></strong>
+        </div>
+        <div class="summary-row">
+          <span>Slot</span>
+          <strong data-summary-slot>Choose slot</strong>
+        </div>
+      </div>
+      <button class="btn btn-primary full-width" type="submit" data-booking-submit disabled data-sound-click>Confirm Appointment</button>
+      <p class="muted">Payment opens after confirmation.</p>
+      <div class="confirmation-ribbon" aria-hidden="true">
+        <span>01 Service</span>
+        <span>02 Date</span>
+        <span>03 Time</span>
+        <span>04 Confirmation</span>
+      </div>
+    </aside>
+  </form>
+</main>
+
+<%- include('../partials/footer', { scripts }) %>

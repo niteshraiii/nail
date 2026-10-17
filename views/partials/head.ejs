@@ -1,0 +1,33 @@
+<% const pageTitle = typeof title !== 'undefined' ? title : appName; %>
+<% const bodyClassValue = typeof bodyClass !== 'undefined' ? bodyClass : ''; %>
+<% const routeName = typeof activePage !== 'undefined' ? activePage : pageTitle.toLowerCase().replace(/\s+/g, '-'); %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Nailchemist luxury nail studio appointments, payments, and boutique loyalty rewards.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400..900&family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title><%= pageTitle %> | <%= appName %></title>
+  <link rel="stylesheet" href="/css/base/tokens.css">
+  <link rel="stylesheet" href="/css/base/reset.css">
+  <link rel="stylesheet" href="/css/components/ui.css">
+  <link rel="stylesheet" href="/css/components/navigation.css">
+  <link rel="stylesheet" href="/css/layouts/shell.css">
+  <link rel="stylesheet" href="/css/pages/customer.css">
+  <link rel="stylesheet" href="/css/pages/admin.css">
+  <link rel="stylesheet" href="/css/animations/motion.css">
+  <link rel="stylesheet" href="/css/refinement.css">
+  <link rel="stylesheet" href="/css/purple-restoration.css">
+  <link rel="stylesheet" href="/css/typography.css">
+  <link rel="stylesheet" href="/css/gallery-3d.css">
+</head>
+<body class="<%= bodyClassValue %>" data-route="<%= routeName %>">
+<div class="page-loader" data-page-loader aria-hidden="true">
+  <div class="loader-mark">
+    <span>Nailchemist</span>
+  </div>
+</div>
+<div class="grain-overlay" aria-hidden="true"></div>

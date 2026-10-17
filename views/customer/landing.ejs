@@ -1,0 +1,258 @@
+<%- include('../partials/head', { title, bodyClass: 'customer-page landing-page concept-page' }) %>
+<%- include('../partials/customer-nav', { activePage, currentUser }) %>
+<%- include('../partials/flash', { flash }) %>
+
+<%
+  const serviceImages = [
+    '/images/nailchemist-gel.png',
+    '/images/nailchemist-spa.png',
+    '/images/nailchemist-art.png'
+  ];
+
+  const galleryItems = [
+    {
+      category: 'art',
+      image: '/images/nailchemist-art.png',
+      alt: 'Lavender marble nail art with pearl detail',
+      label: 'Art',
+      title: 'Lavender marble'
+    },
+    {
+      category: 'gel',
+      image: '/images/nailchemist-gel.png',
+      alt: 'Lavender gel polish application',
+      label: 'Gel',
+      title: 'Soft chrome gloss'
+    },
+    {
+      category: 'spa',
+      image: '/images/nailchemist-spa.png',
+      alt: 'Lavender pedicure spa treatment',
+      label: 'Spa',
+      title: 'Pedicure care'
+    },
+    {
+      category: 'gel',
+      image: '/images/nailchemist-hero.png',
+      alt: 'Lavender manicure editorial set',
+      label: 'Gel',
+      title: 'Signature set'
+    },
+    {
+      category: 'art',
+      image: '/images/nailchemist-art.png',
+      alt: 'Pearl-accented lavender nail art photographed editorially',
+      label: 'Art',
+      title: 'Pearl detail'
+    }
+  ];
+%>
+
+<main>
+  <section class="concept-hero" data-hero>
+    <div class="concept-hero-inner">
+      <div class="hero-editorial-copy">
+        <p class="eyebrow hero-kicker">Independent nail studio</p>
+        <h1 class="hero-title">Nailchemist</h1>
+        <p class="hero-copy">A lavender-accented beauty studio for quiet manicures, considered nail art, and appointment rituals that feel personal.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="<%= currentUser ? '/booking' : '/login' %>" data-sound-click>Book Appointment</a>
+          <a class="btn btn-soft" href="#gallery" data-sound-click>View Gallery</a>
+        </div>
+      </div>
+
+      <div class="hero-image-composition">
+        <figure class="nail-portrait editorial-main-photo" data-image-reveal data-parallax data-speed="-0.025">
+          <img
+            src="/images/nailchemist-hero.png"
+            alt="Luxury lavender manicure"
+            fetchpriority="high"
+            decoding="async"
+          >
+        </figure>
+        <figure class="hero-inset-photo" data-image-reveal>
+          <img src="/images/nailchemist-art.png" alt="Lavender marble nail art closeup" loading="lazy" decoding="async">
+        </figure>
+        <div class="hero-service-note">
+          <span>Signature finish</span>
+          <strong>Gel, art, and spa care</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-info-strip editorial-info-strip" data-reveal>
+      <div>
+        <span>01</span>
+        <strong>Choose a service</strong>
+      </div>
+      <div>
+        <span>02</span>
+        <strong>Reserve a live slot</strong>
+      </div>
+      <div>
+        <span>03</span>
+        <strong>Unlock rewards</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="concept-section services-showcase" id="services" data-reveal-group>
+    <div class="section-intro" data-reveal>
+      <p class="eyebrow">Featured services</p>
+      <h2>Quietly polished services, edited down to what clients actually book.</h2>
+    </div>
+
+    <div class="service-depth-grid">
+      <% if (services.length === 0) { %>
+        <article class="service-depth-card" data-card data-reveal>
+          <span class="service-price">Coming soon</span>
+          <h3>Signature Nail Ritual</h3>
+          <p>Curated services will appear here once the salon menu is active.</p>
+        </article>
+      <% } %>
+      <% services.forEach(function (service, index) { %>
+        <article class="service-depth-card <%= index === 1 ? 'is-featured' : '' %>" data-card data-reveal>
+          <div class="service-media" data-image-reveal>
+            <img src="<%= serviceImages[index % serviceImages.length] %>" alt="<%= service.service_name %>" loading="lazy" decoding="async">
+          </div>
+          <span class="service-price">INR <%= Number(service.price).toFixed(0) %></span>
+          <h3><%= service.service_name %></h3>
+          <p><%= service.description || 'A polished Nailchemist treatment crafted for soft shine and lasting detail.' %></p>
+          <a class="mini-arrow" href="<%= currentUser ? '/booking' : '/login' %>" aria-label="Book <%= service.service_name %>" data-nav-link>&rarr;</a>
+        </article>
+      <% }); %>
+    </div>
+  </section>
+
+  <section class="concept-section gallery-section gallery-3d-section" id="gallery" data-reveal-group data-gallery-carousel>
+    <div class="gallery-3d-shell">
+      <div class="gallery-3d-header" data-reveal>
+        <div class="gallery-feature-copy">
+          <p class="eyebrow">Customer gallery</p>
+          <h2>Gallery</h2>
+          <p>A collection of signature work: lavender chrome, soft marble, clean gloss, and delicate accents presented as a cinematic wall of Nailchemist details.</p>
+        </div>
+
+        <div class="gallery-filter-bar" aria-label="Gallery filters" data-gallery-filters>
+          <button class="gallery-filter active" type="button" data-filter="all">All</button>
+          <button class="gallery-filter" type="button" data-filter="gel">Gel</button>
+          <button class="gallery-filter" type="button" data-filter="art">Art</button>
+          <button class="gallery-filter" type="button" data-filter="spa">Spa</button>
+        </div>
+      </div>
+
+      <div class="gallery-3d-stage" data-gallery-stage aria-label="Nailchemist gallery carousel" aria-roledescription="carousel" data-reveal>
+        <div class="gallery-3d-ambient" aria-hidden="true"></div>
+        <div class="gallery-grid gallery-3d-track" data-gallery-grid>
+          <% galleryItems.forEach(function (item, index) { %>
+            <article
+              class="gallery-item gallery-3d-item"
+              data-category="<%= item.category %>"
+              data-gallery-item
+              data-gallery-title="<%= item.title %>"
+              data-gallery-label="<%= item.label %>"
+              tabindex="0"
+              role="button"
+              aria-label="Show <%= item.title %>"
+            >
+              <figure data-image-reveal>
+                <img
+                  src="<%= item.image %>"
+                  alt="<%= item.alt %>"
+                  loading="<%= index === 0 ? 'eager' : 'lazy' %>"
+                  decoding="async"
+                >
+              </figure>
+              <div>
+                <span><%= item.label %></span>
+                <strong><%= item.title %></strong>
+              </div>
+            </article>
+          <% }); %>
+        </div>
+      </div>
+
+      <div class="gallery-3d-footer" data-reveal>
+        <div class="gallery-3d-caption" aria-live="polite">
+          <span data-gallery-index>01</span>
+          <strong data-gallery-title><%= galleryItems[0].title %></strong>
+          <small data-gallery-category><%= galleryItems[0].label %></small>
+        </div>
+
+        <div class="gallery-3d-controls">
+          <button class="gallery-3d-control" type="button" data-gallery-prev aria-label="Previous gallery image">
+            <span aria-hidden="true">&larr;</span>
+          </button>
+          <button class="gallery-3d-control" type="button" data-gallery-next aria-label="Next gallery image">
+            <span aria-hidden="true">&rarr;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <template data-gallery-empty-template>
+    <div class="gallery-3d-empty">
+      <div>
+        <p class="eyebrow">Customer gallery</p>
+        <h2>Gallery</h2>
+        <p>Fresh Nailchemist details will appear here soon.</p>
+      </div>
+    </div>
+  </template>
+
+  <section class="concept-section reward-campaign" data-reveal-group>
+    <div class="campaign-copy" data-reveal>
+      <p class="eyebrow">Membership glow</p>
+      <h2>A digital card that feels like part of the studio.</h2>
+      <p>Collect visits, reveal rewards, and keep each appointment connected to your private Nailchemist membership.</p>
+      <a class="btn btn-secondary" href="<%= currentUser ? '/loyalty' : '/login' %>" data-sound-click>Open Loyalty</a>
+    </div>
+
+    <div class="campaign-card-wrap" data-card data-reveal>
+      <div class="premium-card preview-card">
+        <div class="premium-card-top">
+          <span>Nailchemist</span>
+          <span>Member</span>
+        </div>
+        <div class="premium-card-title">Loyalty Card</div>
+        <div class="stamp-grid" aria-hidden="true">
+          <% for (let i = 1; i <= 10; i += 1) { %>
+            <span class="stamp <%= i <= 6 ? 'is-filled' : '' %>"><%= i %></span>
+          <% } %>
+        </div>
+        <div class="premium-card-bottom">
+          <strong>6 / 10 visits</strong>
+          <span>Reward loading</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="concept-section testimonial-band" data-reveal-group>
+    <article class="quote-card" data-card data-reveal>
+      <p>&ldquo;Measured, calm, and beautifully finished.&rdquo;</p>
+      <span class="mini-label">Studio guest</span>
+    </article>
+    <article class="quote-card" data-card data-reveal>
+      <p>&ldquo;The kind of manicure you keep looking at all week.&rdquo;</p>
+      <span class="mini-label">Member note</span>
+    </article>
+    <article class="quote-card" data-card data-reveal>
+      <p>&ldquo;Everything feels personal without being precious.&rdquo;</p>
+      <span class="mini-label">Nail lover</span>
+    </article>
+  </section>
+
+  <section class="concept-section final-cta" data-reveal>
+    <div class="final-cta-inner">
+      <div>
+        <p class="eyebrow">Boutique appointment</p>
+        <h2>Ready for your next shine?</h2>
+      </div>
+      <a class="btn btn-primary" href="<%= currentUser ? '/booking' : '/login' %>" data-sound-click>Reserve Now</a>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer', { scripts }) %>

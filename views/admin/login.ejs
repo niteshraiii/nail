@@ -1,0 +1,32 @@
+<%- include('../partials/head', { title, bodyClass: 'auth-page admin-page' }) %>
+<%- include('../partials/flash', { flash }) %>
+
+<main class="auth-shell">
+  <section class="auth-split-card admin-login-card" data-reveal>
+    <div class="auth-copy">
+      <p class="eyebrow">Admin</p>
+      <h1>Admin Portal</h1>
+      <p class="muted">Email and password access only.</p>
+
+      <form action="/admin/login" method="POST" class="stacked-form admin-auth-form">
+        <label class="field">
+          <span>Email</span>
+          <input type="email" name="email" autocomplete="email" placeholder="admin@nailchemist.local" required>
+        </label>
+        <label class="field">
+          <span>Password</span>
+          <input type="password" name="password" autocomplete="current-password" required>
+        </label>
+        <button class="btn btn-primary full-width" type="submit" data-sound-click>Sign In</button>
+      </form>
+
+      <a class="text-link center-link" href="/login" data-nav-link>Customer login</a>
+    </div>
+
+    <figure class="auth-visual" data-image-reveal>
+      <img src="/images/nailchemist-gel.png" alt="Lavender polish application">
+    </figure>
+  </section>
+</main>
+
+<%- include('../partials/footer', { scripts }) %>

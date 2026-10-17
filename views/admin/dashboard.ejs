@@ -1,0 +1,293 @@
+<%- include('../partials/head', { title, bodyClass: 'admin-page dashboard-page' }) %>
+<%- include('../partials/admin-nav', { activePage, adminUser }) %>
+<%- include('../partials/flash', { flash }) %>
+
+<%
+  const recentPaymentRows = Array.isArray(recentPayments) ? recentPayments : [];
+  const customerRows = Array.isArray(customers) ? customers : [];
+  const todayBookingRows =
+    typeof todayBookings !== 'undefined' && Array.isArray(todayBookings) ? todayBookings : [];
+  const trackedVisitCount = customerRows.reduce(function (total, customer) {
+    return total + Number(customer.visit_count || 0);
+  }, 0);
+
+  function formatDate(value, fallback) {
+    const date = new Date(value);
+    if (!value || Number.isNaN(date.getTime())) {
+      return fallback || 'Today';
+    }
+    return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+  }
+
+  function statusTone(value) {
+    const status = String(value || '').toLowerCase();
+    if (status.includes('paid') || status.includes('confirm') || status.includes('complete') || status.includes('record')) {
+      return 'status-live';
+    }
+    if (status.includes('pending') || status.includes('wait')) {
+      return 'status-warm';
+    }
+    return 'status-muted';
+  }
+
+  function loyaltyTier(visits) {
+    const count = Number(visits || 0);
+    if (count >= 12) return 'Signature';
+    if (count >= 6) return 'Bloom';
+    if (count >= 3) return 'Glow';
+    return 'Starter';
+  }
+
+%>
+
+<main class="app-shell wide-shell admin-dashboard-shell" data-admin-dashboard>
+  <section class="admin-overview-header" data-admin-reveal>
+    <div>
+      <p class="eyebrow">Admin overview</p>
+      <h1>Welcome back, Admin</h1>
+      <p>Manage bookings, customers, rewards and studio operations.</p>
+    </div>
+    <a class="small-action admin-header-action" href="/admin/appointments" data-nav-link>Review Bookings</a>
+  </section>
+
+  <section class="admin-kpi-grid" aria-label="Studio statistics">
+    <article class="admin-kpi-card" data-admin-card data-card data-admin-reveal>
+      <span class="admin-kpi-icon admin-kpi-customers" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false"><path d="M8.5 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm7 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM3.5 19c.5-3.2 2.4-5 5-5s4.5 1.8 5 5H3.5Zm10.5 0c.3-1.7 1-3.1 2.1-4.1.5-.2 1-.3 1.6-.3 2 0 3.4 1.4 3.8 4.4H14Z"/></svg>
+      </span>
+      <span class="admin-kpi-label">Customers</span>
+      <strong data-count-up="<%= stats.customerCount %>">0</strong>
+      <span class="admin-trend">+ Member base</span>
+    </article>
+
+    <article class="admin-kpi-card" data-admin-card data-card data-admin-reveal>
+      <span class="admin-kpi-icon admin-kpi-services" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false"><path d="M5 4h14v3H5V4Zm0 6h14v3H5v-3Zm0 6h14v3H5v-3Zm2-11v1h10V5H7Zm0 6v1h10v-1H7Zm0 6v1h10v-1H7Z"/></svg>
+      </span>
+      <span class="admin-kpi-label">Active Services</span>
+      <strong data-count-up="<%= stats.activeServiceCount %>">0</strong>
+      <span class="admin-trend">+ Live menu</span>
+    </article>
+
+    <article class="admin-kpi-card" data-admin-card data-card data-admin-reveal>
+      <span class="admin-kpi-icon admin-kpi-bookings" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false"><path d="M6 3h2v3h8V3h2v3h2v16H4V6h2V3Zm12 9H6v8h12v-8ZM6 8v2h12V8H6Zm2 6h3v3H8v-3Z"/></svg>
+      </span>
+      <span class="admin-kpi-label">Upcoming Bookings</span>
+      <strong data-count-up="<%= stats.upcomingCount %>">0</strong>
+      <span class="admin-trend">+ Queue watch</span>
+    </article>
+
+    <article class="admin-kpi-card" data-admin-card data-card data-admin-reveal>
+      <span class="admin-kpi-icon admin-kpi-revenue" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false"><path d="M5 5h14v14H5V5Zm2 2v10h10V7H7Zm2 2h6v2H9V9Zm0 4h5v2H9v-2Z"/></svg>
+      </span>
+      <span class="admin-kpi-label">Revenue</span>
+      <strong>INR <span data-count-up="<%= Number(stats.revenueTotal).toFixed(0) %>">0</span></strong>
+      <span class="admin-trend">+ Paid total</span>
+    </article>
+  </section>
+
+  <section class="admin-grid-row admin-grid-row-main admin-dashboard-section" data-admin-reveal>
+    <article class="admin-widget admin-widget-large" data-admin-card data-card>
+      <div class="panel-heading admin-panel-heading">
+        <div>
+          <p class="admin-panel-kicker">Today</p>
+          <h2>Today's Bookings</h2>
+        </div>
+        <div class="admin-status-legend" aria-label="Booking status legend">
+          <span class="status-pill status-live">Confirmed</span>
+          <span class="status-pill status-warm">Pending</span>
+          <span class="status-pill status-muted">Completed</span>
+        </div>
+      </div>
+      <div class="admin-table-scroll">
+        <table class="admin-data-table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Customer</th>
+              <th>Service</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody data-today-bookings-body data-has-server-rows="<%= todayBookingRows.length > 0 ? 'true' : 'false' %>">
+            <% if (todayBookingRows.length === 0) { %>
+              <tr>
+                <td colspan="4">
+                  <div class="admin-empty-state">
+                    <strong>Loading today's schedule.</strong>
+                    <span>The overview is checking the bookings ledger.</span>
+                    <a class="small-action" href="/admin/appointments" data-nav-link>Open Bookings</a>
+                  </div>
+                </td>
+              </tr>
+            <% } %>
+            <% todayBookingRows.forEach(function (booking) { %>
+              <tr>
+                <td><%= booking.time || String(booking.appointment_time || '').slice(0, 5) || 'TBD' %></td>
+                <td><strong><%= booking.customer_name || booking.customer || 'Customer' %></strong></td>
+                <td><%= booking.service_name || booking.service || 'Service' %></td>
+                <td>
+                  <% const bookingStatus = booking.status || (booking.completed ? 'Completed' : 'Confirmed'); %>
+                  <span class="status-pill <%= statusTone(bookingStatus) %>"><%= bookingStatus %></span>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <article class="admin-widget admin-widget-compact" data-admin-card data-card>
+      <div class="panel-heading admin-panel-heading">
+        <div>
+          <p class="admin-panel-kicker">Finance</p>
+          <h2>Recent Payments</h2>
+        </div>
+        <a class="text-link" href="/admin/appointments" data-nav-link>Ledger</a>
+      </div>
+      <div class="admin-table-scroll compact">
+        <table class="admin-data-table">
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (recentPaymentRows.length === 0) { %>
+              <tr><td colspan="4">No payments yet.</td></tr>
+            <% } %>
+            <% recentPaymentRows.forEach(function (payment) { %>
+              <tr>
+                <td><strong><%= payment.customer_name %></strong></td>
+                <td>INR <%= Number(payment.amount).toFixed(0) %></td>
+                <td><%= formatDate(payment.created_at, 'Recent') %></td>
+                <td><span class="status-pill <%= statusTone(payment.status) %>"><%= payment.status %></span></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+
+  <section class="admin-grid-row admin-dashboard-section" data-admin-reveal>
+    <article class="admin-widget admin-widget-large" data-admin-card data-card>
+      <div class="panel-heading admin-panel-heading">
+        <div>
+          <p class="admin-panel-kicker">Members</p>
+          <h2>Customers</h2>
+        </div>
+        <a class="text-link" href="/admin/visits" data-nav-link>Visit updater</a>
+      </div>
+      <div class="admin-table-scroll">
+        <table class="admin-data-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Visits</th>
+              <th>Loyalty Tier</th>
+              <th>View</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (customerRows.length === 0) { %>
+              <tr><td colspan="5">No customers yet.</td></tr>
+            <% } %>
+            <% customerRows.slice(0, 8).forEach(function (customer) { %>
+              <tr>
+                <td><strong><%= customer.name %></strong></td>
+                <td><span class="table-subtext"><%= customer.email %></span></td>
+                <td><strong><%= customer.visit_count %></strong></td>
+                <td><span class="status-pill"><%= loyaltyTier(customer.visit_count) %></span></td>
+                <td><a class="small-action" href="/admin/visits" data-nav-link>View</a></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <article class="admin-widget admin-widget-compact admin-rewards-widget" data-admin-card data-card>
+      <div class="panel-heading admin-panel-heading">
+        <div>
+          <p class="admin-panel-kicker">Rewards</p>
+          <h2>Reward Focus</h2>
+        </div>
+        <a class="text-link" href="/admin/visits" data-nav-link>Editor</a>
+      </div>
+      <div class="admin-reward-summary">
+        <div class="admin-reward-meter">
+          <span class="mini-label">Tracked visits</span>
+          <strong><%= trackedVisitCount %></strong>
+          <p>Customer progress feeds the existing visit and reward tools.</p>
+        </div>
+        <div class="reward-overview-list">
+          <article class="reward-overview-card">
+            <div>
+              <strong>Visit updater</strong>
+              <span>Record completed appointments</span>
+            </div>
+            <a class="small-action" href="/admin/visits" data-nav-link>Open</a>
+          </article>
+          <article class="reward-overview-card">
+            <div>
+              <strong>Reward editor</strong>
+              <span>Maintain tier unlocks</span>
+            </div>
+            <a class="small-action" href="/admin/visits" data-nav-link>Manage</a>
+          </article>
+        </div>
+      </div>
+    </article>
+
+  </section>
+
+  <section class="admin-widget admin-activity-panel admin-dashboard-section" data-admin-card data-card data-admin-reveal>
+    <div class="panel-heading admin-panel-heading">
+      <div>
+        <p class="admin-panel-kicker">Operations</p>
+        <h2>Recent Activity</h2>
+      </div>
+      <span class="badge">Live studio feed</span>
+    </div>
+    <div class="admin-activity-feed">
+      <article class="admin-activity-item">
+        <span class="activity-dot"></span>
+        <strong>Customer booked service</strong>
+        <small>Booking queue updated</small>
+      </article>
+      <% if (recentPaymentRows[0]) { %>
+        <article class="admin-activity-item">
+          <span class="activity-dot"></span>
+          <strong>Payment completed</strong>
+          <small><%= recentPaymentRows[0].customer_name %> paid INR <%= Number(recentPaymentRows[0].amount).toFixed(0) %></small>
+        </article>
+      <% } %>
+      <article class="admin-activity-item">
+        <span class="activity-dot"></span>
+        <strong>Reward redeemed</strong>
+        <small>Loyalty tier reviewed</small>
+      </article>
+      <% if (customerRows[0]) { %>
+        <article class="admin-activity-item">
+          <span class="activity-dot"></span>
+          <strong>Customer profile updated</strong>
+          <small><%= customerRows[0].name %> is in <%= loyaltyTier(customerRows[0].visit_count) %> tier</small>
+        </article>
+      <% } %>
+      <article class="admin-activity-item">
+        <span class="activity-dot"></span>
+        <strong>Service updated</strong>
+        <small>Menu status synced</small>
+      </article>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer', { scripts }) %>

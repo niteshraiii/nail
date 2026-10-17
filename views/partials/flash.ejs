@@ -1,0 +1,6 @@
+<% if (flash) { %>
+  <div class="toast toast-<%= flash.type %>" role="status" data-toast>
+    <span class="toast-orb" aria-hidden="true"></span>
+    <span><%= flash.message %></span>
+  </div>
+<% } %>

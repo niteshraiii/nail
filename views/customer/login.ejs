@@ -1,0 +1,32 @@
+<%- include('../partials/head', { title, bodyClass: 'auth-page customer-page' }) %>
+<%- include('../partials/customer-nav', { activePage, currentUser }) %>
+<%- include('../partials/flash', { flash }) %>
+
+<main class="auth-shell">
+  <section class="auth-split-card auth-customer-card" data-reveal>
+    <div class="auth-copy">
+      <p class="eyebrow">Customer login</p>
+      <h1>Welcome back.</h1>
+      <p class="muted">Use Google to access appointments, rewards, and your Nailchemist profile.</p>
+
+      <div class="auth-actions">
+        <% if (googleEnabled) { %>
+          <a class="btn btn-primary full-width google-login-button" href="/auth/google" data-sound-click>
+            <span class="google-mark" aria-hidden="true">G</span>
+            <span>Continue with Google</span>
+          </a>
+        <% } else { %>
+          <button class="btn btn-primary full-width" type="button" disabled>Google login unavailable</button>
+        <% } %>
+
+        <a class="text-link center-link" href="/admin/login" data-nav-link>Admin Login</a>
+      </div>
+    </div>
+
+    <figure class="auth-visual" data-image-reveal>
+      <img src="/images/nailchemist-hero.png" alt="Lavender manicure on satin">
+    </figure>
+  </section>
+</main>
+
+<%- include('../partials/footer', { scripts }) %>

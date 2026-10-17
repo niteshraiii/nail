@@ -1,0 +1,25 @@
+node_modules/
+.env
+npm-debug.log*
+coverage/
+dist/
+.DS_Store
+Thumbs.db
+
+# Browser automation/profile caches
+.edge-cdp-profile/
+.edge-profile/
+.edge-profile-mobile/
+
+# Dependencies
+node_modules/
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+# Logs and temporary files
+npm-debug.log*
+*.log
+.DS_Store

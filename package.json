@@ -1,0 +1,42 @@
+{
+  "name": "nailchemist",
+  "version": "1.0.0",
+  "description": "Nailchemist beauty salon loyalty, appointment booking, and payment management app.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "check": "node --check app.js && node --check config/db.js && node --check config/passport.js && node --check config/razorpay.js && node --check config/session.js && node --check controllers/adminController.js && node --check controllers/authController.js && node --check controllers/customerController.js && node --check controllers/paymentController.js && node --check middleware/auth.js && node --check middleware/flash.js && node --check models/appointmentModel.js && node --check models/paymentModel.js && node --check models/rewardModel.js && node --check models/serviceModel.js && node --check models/userModel.js && node --check models/visitModel.js && node --check routes/adminRoutes.js && node --check routes/authRoutes.js && node --check routes/customerRoutes.js"
+  },
+  "keywords": [
+    "beauty",
+    "loyalty",
+    "appointments",
+    "express",
+    "mysql",
+    "ejs"
+  ],
+  "author": "Nailchemist",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
+    "dotenv": "^16.6.1",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-mysql-session": "^3.0.3",
+    "express-rate-limit": "^7.5.0",
+    "express-session": "^1.19.0",
+    "gsap": "^3.12.5",
+    "helmet": "^8.0.0",
+    "method-override": "^3.0.0",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.11.5",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "razorpay": "^2.9.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}

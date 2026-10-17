@@ -1,0 +1,134 @@
+main {
+  position: relative;
+  z-index: 1;
+}
+
+.app-shell,
+.section-shell {
+  width: min(var(--container), calc(100% - 1.25rem));
+  margin: 0 auto;
+}
+
+.app-shell {
+  padding: calc(var(--nav-height) + 1.35rem) 0 5rem;
+}
+
+.section-shell {
+  padding: clamp(2.8rem, 6vw, 5.4rem) 0;
+}
+
+.narrow-shell {
+  width: min(760px, calc(100% - 1.25rem));
+}
+
+.wide-shell {
+  width: min(1320px, calc(100% - 1.25rem));
+}
+
+.page-heading {
+  display: grid;
+  gap: 0.55rem;
+  margin-bottom: clamp(1rem, 2.4vw, 1.8rem);
+}
+
+.page-heading h1 {
+  max-width: 13ch;
+  margin: 0;
+  font-size: clamp(3.1rem, 8vw, 6.7rem);
+}
+
+.page-heading p:not(.eyebrow) {
+  max-width: 42rem;
+  margin-bottom: 0;
+}
+
+.split-feature,
+.dashboard-grid,
+.booking-layout,
+.admin-grid,
+.profile-grid,
+.payment-grid,
+.landing-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.site-footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  width: min(var(--container), calc(100% - 1.25rem));
+  margin: 0 auto;
+  padding: 2rem 0 6.4rem;
+  color: var(--color-muted);
+  border-top: 1px solid var(--color-line);
+}
+
+.site-footer div {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.site-footer strong {
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+}
+
+.auth-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  width: min(100%, 520px);
+  margin: 0 auto;
+  padding: calc(var(--nav-height) + 1.25rem) 1rem 4.5rem;
+}
+
+@media (min-width: 760px) {
+  .app-shell,
+  .section-shell,
+  .site-footer {
+    width: min(var(--container), calc(100% - 3rem));
+  }
+
+  .narrow-shell {
+    width: min(780px, calc(100% - 3rem));
+  }
+
+  .site-footer {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 2.8rem;
+  }
+
+  .split-feature {
+    grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+    align-items: start;
+  }
+
+  .landing-grid,
+  .dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1020px) {
+  .booking-layout {
+    grid-template-columns: minmax(0, 1.42fr) minmax(320px, 0.58fr);
+    align-items: start;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1.12fr 0.9fr 0.98fr;
+  }
+
+  .admin-grid,
+  .profile-grid,
+  .payment-grid {
+    grid-template-columns: minmax(280px, 0.42fr) minmax(0, 0.58fr);
+    align-items: start;
+  }
+}

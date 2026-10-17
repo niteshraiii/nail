@@ -1,0 +1,358 @@
+/*
+  Premium editorial typography layer.
+  Loaded last so the type hierarchy can be refined without changing layout,
+  templates, routes, booking, payment, loyalty, or admin logic.
+*/
+
+:root {
+  --font-display: "Kolton Monica", "KoltonMonica", "Bodoni Moda", "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-heading: var(--font-display);
+  --font-body: "Manrope", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-number: "Inter", "Manrope", ui-sans-serif, system-ui, sans-serif;
+
+  --type-hero: 3.15rem;
+  --type-page-title: 2.35rem;
+  --type-section-title: 2.05rem;
+  --type-feature-title: 1.9rem;
+  --type-editorial-title: 1.8rem;
+  --type-ui-title: 1.18rem;
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: 500;
+  line-height: 1.65;
+}
+
+button,
+input,
+textarea,
+select,
+label,
+table,
+th,
+td {
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-body);
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.08;
+}
+
+p,
+.muted {
+  line-height: 1.7;
+}
+
+.hero-title,
+.page-heading h1,
+.auth-copy h1,
+.cockpit-greeting h1,
+.booking-intro h1,
+.loyalty-copy h1,
+.profile-hero-panel h1,
+.payment-hero h1,
+.section-intro h2,
+.campaign-copy h2,
+.gallery-feature-copy h2,
+.final-cta h2,
+.payment-booking-lockup h2,
+.service-depth-card h3,
+.premium-card-title,
+.quote-card p,
+.profile-summary-panel h2,
+.loyalty-page .panel-heading h2,
+.loyalty-page .progress-showpiece h2,
+.loyalty-page .reward-state-panel h2,
+.admin-page .page-heading h1,
+.admin-overview-header h1,
+.admin-empty-state strong,
+.site-footer strong,
+.loader-mark {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 0.95;
+  text-wrap: balance;
+}
+
+.hero-title {
+  max-width: 11ch;
+  font-size: var(--type-hero);
+  line-height: 0.9;
+  font-variation-settings: "opsz" 84;
+}
+
+.page-heading h1,
+.auth-copy h1,
+.cockpit-greeting h1,
+.booking-intro h1,
+.loyalty-copy h1,
+.profile-hero-panel h1,
+.payment-hero h1,
+.admin-page .page-heading h1,
+.admin-overview-header h1 {
+  font-size: var(--type-page-title);
+  font-variation-settings: "opsz" 64;
+}
+
+.section-intro h2,
+.campaign-copy h2,
+.gallery-feature-copy h2,
+.final-cta h2,
+.payment-booking-lockup h2 {
+  font-size: var(--type-section-title);
+  font-variation-settings: "opsz" 72;
+}
+
+.service-depth-card h3,
+.premium-card-title,
+.quote-card p {
+  font-size: var(--type-feature-title);
+  font-variation-settings: "opsz" 72;
+}
+
+.profile-summary-panel h2,
+.loyalty-page .panel-heading h2,
+.loyalty-page .progress-showpiece h2,
+.loyalty-page .reward-state-panel h2 {
+  font-size: var(--type-editorial-title);
+  font-variation-settings: "opsz" 64;
+}
+
+.nav-shell,
+.mobile-dock,
+.brand-mark,
+.brand-copy strong,
+.admin-nav-shell .brand-copy strong,
+.avatar-chip,
+.admin-identity-copy strong,
+.nav-pill,
+.dock-link,
+.nav-command,
+.btn,
+.small-action,
+.icon-button,
+.slot-button {
+  font-family: var(--font-body);
+}
+
+.brand-copy strong,
+.admin-nav-shell .brand-copy strong,
+.brand-mark,
+.avatar-chip {
+  font-weight: 800;
+}
+
+.eyebrow,
+.hero-kicker,
+.admin-panel-kicker,
+.badge,
+.service-price,
+.status-pill,
+.mini-label,
+.reward-badge,
+.floating-note span,
+.payment-media-caption span,
+.admin-kpi-label,
+.admin-trend,
+th {
+  font-family: var(--font-body);
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.btn,
+.nav-command,
+.small-action,
+.slot-button,
+.tab,
+.field,
+.field span,
+.field input,
+.field textarea,
+.field select,
+.table-input,
+.toast,
+.payment-pay-button,
+.payment-status,
+.payment-config-note,
+.summary-row,
+.receipt-row,
+.step-pill,
+.service-option-body,
+.service-option-body strong,
+.service-option-body small,
+.gallery-item strong,
+.booking-summary strong,
+.profile-avatar,
+.booking-stage h2,
+.booking-preview-panel h2,
+.payment-checkout-panel h2,
+.payment-ticket h2,
+.payment-flow-step,
+.payment-flow-step strong,
+.payment-flow-step small,
+.payment-assurance-strip,
+.payment-assurance-strip span,
+.admin-panel-heading h2,
+.admin-widget h2,
+.admin-kpi-card,
+.admin-kpi-card strong,
+.admin-reward-meter strong,
+.reward-overview-card,
+.admin-activity-item,
+.table-panel h2,
+.form-panel h2,
+.panel-heading h2,
+.glass-panel h2,
+.admin-panel h2 {
+  font-family: var(--font-body);
+}
+
+.booking-stage h2,
+.booking-preview-panel h2,
+.payment-checkout-panel h2,
+.payment-ticket h2,
+.admin-panel-heading h2,
+.admin-widget h2,
+.table-panel h2,
+.form-panel h2,
+.panel-heading h2,
+.glass-panel h2,
+.admin-panel h2 {
+  font-size: var(--type-ui-title);
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.service-option-body strong,
+.payment-flow-step strong,
+.gallery-item strong,
+.booking-summary strong,
+.reward-overview-card strong,
+.admin-activity-item strong {
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.membership-number,
+.progress-ring,
+.stamp,
+.service-choice-index,
+.payment-ticket-total strong,
+.total-row,
+.admin-kpi-card strong,
+.admin-reward-meter strong,
+.glass-info-strip span,
+.google-mark {
+  font-family: var(--font-number);
+}
+
+.floating-note strong,
+.hero-service-note strong,
+.glass-info-strip strong,
+.action-tile strong,
+.reward-state strong,
+.milestone strong,
+.profile-summary-row strong,
+.summary-row strong,
+.receipt-row strong,
+td strong {
+  font-family: var(--font-body);
+}
+
+.final-cta-inner h2,
+.premium-card-title,
+.loyalty-page .loyalty-copy h1,
+.loyalty-page .panel-heading h2,
+.concept-hero .hero-title {
+  color: var(--nc-white, #ffffff);
+}
+
+.service-depth-card h3,
+.section-intro h2,
+.campaign-copy h2,
+.gallery-feature-copy h2,
+.payment-booking-lockup h2,
+.profile-summary-panel h2,
+.page-heading h1,
+.admin-page .page-heading h1,
+.admin-overview-header h1 {
+  color: var(--nc-text-dark, #2b1735);
+}
+
+@media (min-width: 520px) {
+  :root {
+    --type-hero: 4rem;
+    --type-page-title: 2.75rem;
+    --type-section-title: 2.35rem;
+    --type-feature-title: 2.15rem;
+    --type-editorial-title: 2rem;
+    --type-ui-title: 1.25rem;
+  }
+}
+
+@media (min-width: 760px) {
+  :root {
+    --type-hero: 4.8rem;
+    --type-page-title: 3.2rem;
+    --type-section-title: 2.7rem;
+    --type-feature-title: 2.45rem;
+    --type-editorial-title: 2.25rem;
+    --type-ui-title: 1.3rem;
+  }
+
+  .hero-title {
+    line-height: 0.88;
+  }
+}
+
+@media (min-width: 1040px) {
+  :root {
+    --type-hero: 5.65rem;
+    --type-page-title: 3.55rem;
+    --type-section-title: 3rem;
+    --type-feature-title: 2.75rem;
+    --type-editorial-title: 2.45rem;
+    --type-ui-title: 1.35rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --type-hero: 5.95rem;
+    --type-page-title: 3.8rem;
+    --type-section-title: 3.25rem;
+    --type-feature-title: 3rem;
+  }
+}
+
+@media (max-width: 380px) {
+  :root {
+    --type-hero: 2.9rem;
+    --type-page-title: 2.15rem;
+    --type-section-title: 1.9rem;
+    --type-feature-title: 1.75rem;
+    --type-editorial-title: 1.7rem;
+  }
+
+  .hero-title,
+  .page-heading h1,
+  .auth-copy h1,
+  .cockpit-greeting h1,
+  .booking-intro h1,
+  .loyalty-copy h1,
+  .profile-hero-panel h1,
+  .payment-hero h1 {
+    max-width: 10ch;
+  }
+}

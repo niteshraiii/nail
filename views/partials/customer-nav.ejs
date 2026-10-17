@@ -1,0 +1,66 @@
+<% const active = typeof activePage !== 'undefined' ? activePage : ''; %>
+<% const isSignedIn = Boolean(currentUser); %>
+<header class="nav-shell" data-nav-shell>
+  <a class="brand-lockup" href="/" aria-label="Nailchemist home" data-nav-link>
+    <span class="brand-mark">N</span>
+    <span class="brand-copy">
+      <strong>Nailchemist</strong>
+      <small>Beauty loyalty atelier</small>
+    </span>
+  </a>
+
+  <nav class="nav-center" aria-label="Primary navigation">
+    <a class="nav-pill <%= active === 'home' ? 'active' : '' %>" href="/" data-nav-link>Home</a>
+    <a class="nav-pill" href="/#services" data-nav-link>Services</a>
+    <a class="nav-pill" href="/#gallery" data-nav-link>Gallery</a>
+    <a class="nav-pill <%= active === 'booking' ? 'active' : '' %>" href="/booking" data-nav-link>Booking</a>
+    <a class="nav-pill <%= active === 'loyalty' ? 'active' : '' %>" href="/loyalty" data-nav-link>Loyalty</a>
+    <span class="nav-indicator" data-nav-indicator aria-hidden="true"></span>
+  </nav>
+
+  <div class="nav-actions">
+    <% if (isSignedIn) { %>
+      <a class="avatar-chip <%= active === 'profile' ? 'active' : '' %>" href="/profile" data-nav-link aria-label="Open profile">
+        <span><%= currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'N' %></span>
+      </a>
+      <a class="nav-command nav-command-primary" href="/booking" data-nav-link data-sound-click>Book Appointment</a>
+    <% } else { %>
+      <a class="nav-command" href="/login" data-nav-link>Profile</a>
+      <a class="nav-command nav-command-primary" href="/login" data-nav-link data-sound-click>Book Appointment</a>
+    <% } %>
+  </div>
+</header>
+
+<nav class="mobile-dock" aria-label="Mobile navigation">
+  <% if (isSignedIn) { %>
+    <a class="dock-link <%= active === 'dashboard' ? 'active' : '' %>" href="/dashboard" data-nav-link>
+      <span class="dock-icon dock-icon-dashboard" aria-hidden="true"></span>
+      <span>Home</span>
+    </a>
+    <a class="dock-link <%= active === 'booking' ? 'active' : '' %>" href="/booking" data-nav-link>
+      <span class="dock-icon dock-icon-booking" aria-hidden="true"></span>
+      <span>Book</span>
+    </a>
+    <a class="dock-link <%= active === 'loyalty' ? 'active' : '' %>" href="/loyalty" data-nav-link>
+      <span class="dock-icon dock-icon-loyalty" aria-hidden="true"></span>
+      <span>Rewards</span>
+    </a>
+    <a class="dock-link <%= active === 'profile' ? 'active' : '' %>" href="/profile" data-nav-link>
+      <span class="dock-icon dock-icon-profile" aria-hidden="true"></span>
+      <span>Profile</span>
+    </a>
+  <% } else { %>
+    <a class="dock-link <%= active === 'home' ? 'active' : '' %>" href="/" data-nav-link>
+      <span class="dock-icon dock-icon-dashboard" aria-hidden="true"></span>
+      <span>Home</span>
+    </a>
+    <a class="dock-link <%= active === 'login' ? 'active' : '' %>" href="/login" data-nav-link>
+      <span class="dock-icon dock-icon-profile" aria-hidden="true"></span>
+      <span>Login</span>
+    </a>
+    <a class="dock-link" href="/login" data-nav-link>
+      <span class="dock-icon dock-icon-booking" aria-hidden="true"></span>
+      <span>Book</span>
+    </a>
+  <% } %>
+</nav>

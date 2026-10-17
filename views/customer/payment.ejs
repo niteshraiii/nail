@@ -1,0 +1,122 @@
+<%- include('../partials/head', { title, bodyClass: 'customer-page payment-page concept-page' }) %>
+<%- include('../partials/customer-nav', { activePage, currentUser }) %>
+<%- include('../partials/flash', { flash }) %>
+
+<%
+  const paymentAmount = Number(service.price).toFixed(0);
+  const formattedDate = new Date(pendingBooking.appointmentDate).toLocaleDateString('en-IN', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  });
+  const appointmentTime = String(pendingBooking.appointmentTime || '');
+%>
+
+<main class="app-shell wide-shell payment-shell">
+  <section class="payment-hero" data-reveal>
+    <div class="payment-hero-copy">
+      <p class="eyebrow">Secure payment</p>
+      <h1>Complete your booking.</h1>
+      <p>Your Nailchemist seat is ready. Review the details and finish checkout to lock in the appointment.</p>
+    </div>
+    <div class="payment-assurance-strip" aria-label="Payment assurance">
+      <span>Encrypted checkout</span>
+      <span>Razorpay protected</span>
+      <span>Instant confirmation</span>
+    </div>
+  </section>
+
+  <section
+    class="payment-secure-layout"
+    data-payment-config
+    data-create-order-url="/payment/create-order"
+    data-verify-url="/payment/verify"
+    data-key-configured="<%= hasRazorpayConfig ? 'true' : 'false' %>"
+  >
+    <article class="payment-story-panel" data-card data-reveal>
+      <div class="payment-media payment-studio-media" aria-hidden="true">
+        <img src="/images/nailchemist-spa.png" alt="">
+        <div class="payment-media-caption">
+          <span>Booking ready</span>
+          <strong><%= appointmentTime %></strong>
+        </div>
+      </div>
+
+      <div class="payment-booking-lockup">
+        <span class="badge">Appointment selected</span>
+        <h2><%= service.service_name %></h2>
+        <p><%= formattedDate %> at <%= appointmentTime %></p>
+      </div>
+
+      <div class="payment-flow" aria-label="Checkout progress">
+        <div class="payment-flow-step is-complete">
+          <span>01</span>
+          <strong>Service</strong>
+          <small>Selected</small>
+        </div>
+        <div class="payment-flow-step is-complete">
+          <span>02</span>
+          <strong>Slot</strong>
+          <small>Reserved</small>
+        </div>
+        <div class="payment-flow-step is-current">
+          <span>03</span>
+          <strong>Payment</strong>
+          <small>Ready</small>
+        </div>
+      </div>
+    </article>
+
+    <aside class="payment-checkout-panel" data-card data-reveal>
+      <div class="payment-ticket" aria-label="Payment total">
+        <div class="payment-ticket-top">
+          <span class="mini-label">Nailchemist</span>
+          <span class="mini-label"><%= currency %></span>
+        </div>
+        <h2>Secure checkout</h2>
+        <div class="payment-ticket-total">
+          <span>Total due</span>
+          <strong><%= currency %> <%= paymentAmount %></strong>
+        </div>
+      </div>
+
+      <div class="summary-list payment-receipt">
+        <div class="receipt-row">
+          <span>Service</span>
+          <strong><%= service.service_name %></strong>
+        </div>
+        <div class="receipt-row">
+          <span>Date</span>
+          <strong><%= formattedDate %></strong>
+        </div>
+        <div class="receipt-row">
+          <span>Time</span>
+          <strong><%= appointmentTime %></strong>
+        </div>
+        <div class="receipt-row">
+          <span>Payment partner</span>
+          <strong>Razorpay</strong>
+        </div>
+        <div class="receipt-row total-row">
+          <span>Total</span>
+          <strong><%= currency %> <%= paymentAmount %></strong>
+        </div>
+      </div>
+
+      <div class="payment-status-card">
+        <span class="payment-status-dot" aria-hidden="true"></span>
+        <div class="payment-status" data-payment-status aria-live="polite"></div>
+      </div>
+
+      <button class="btn btn-primary full-width payment-pay-button" type="button" data-pay-button <%= hasRazorpayConfig ? '' : 'disabled' %> data-sound-click>
+        <span>Pay with Razorpay</span>
+        <small><%= currency %> <%= paymentAmount %></small>
+      </button>
+      <% if (!hasRazorpayConfig) { %>
+        <p class="muted payment-config-note">Razorpay keys are required before payments can run.</p>
+      <% } %>
+    </aside>
+  </section>
+</main>
+
+<%- include('../partials/footer', { scripts }) %>

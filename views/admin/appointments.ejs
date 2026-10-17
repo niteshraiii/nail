@@ -1,0 +1,52 @@
+<%- include('../partials/head', { title, bodyClass: 'admin-page' }) %>
+<%- include('../partials/admin-nav', { activePage, adminUser }) %>
+<%- include('../partials/flash', { flash }) %>
+
+<main class="app-shell wide-shell">
+  <section class="page-heading" data-reveal>
+    <p class="eyebrow">Appointments</p>
+    <h1>Bookings and payments.</h1>
+    <p>Review customer reservations, payment state, and visit recording status.</p>
+  </section>
+
+  <section class="glass-panel table-panel" data-card data-reveal>
+    <div class="panel-heading">
+      <h2>Appointment Ledger</h2>
+      <span class="badge"><%= appointments.length %> records</span>
+    </div>
+    <div class="responsive-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th>Service</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Payment</th>
+            <th>Visit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (appointments.length === 0) { %>
+            <tr><td colspan="6">No appointments yet.</td></tr>
+          <% } %>
+          <% appointments.forEach(function (appointment) { %>
+            <tr>
+              <td>
+                <strong><%= appointment.customer_name %></strong>
+                <span class="table-subtext"><%= appointment.customer_email %></span>
+              </td>
+              <td><%= appointment.service_name %></td>
+              <td><%= new Date(appointment.appointment_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) %></td>
+              <td><%= String(appointment.appointment_time).slice(0, 5) %></td>
+              <td><span class="status-pill"><%= appointment.payment_status || 'pending' %></span></td>
+              <td><span class="status-pill <%= appointment.completed ? 'status-live' : 'status-muted' %>"><%= appointment.completed ? 'Recorded' : 'Pending' %></span></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer', { scripts }) %>

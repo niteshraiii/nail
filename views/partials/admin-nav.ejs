@@ -1,0 +1,58 @@
+<% const active = typeof activePage !== 'undefined' ? activePage : ''; %>
+<%
+  const adminEmail = adminUser && adminUser.email ? adminUser.email : 'admin@nailchemist.local';
+  const adminNameBase = adminEmail.split('@')[0].replace(/[._-]+/g, ' ');
+  const adminDisplayName = adminNameBase ? adminNameBase.charAt(0).toUpperCase() + adminNameBase.slice(1) : 'Admin';
+  const adminInitial = adminDisplayName.charAt(0).toUpperCase();
+%>
+<header class="nav-shell admin-nav-shell" data-nav-shell>
+  <a class="brand-lockup" href="/admin/dashboard" aria-label="Nailchemist admin" data-nav-link>
+    <span class="brand-mark">N</span>
+    <span class="brand-copy">
+      <strong>Nailchemist Admin</strong>
+      <small>Studio console</small>
+    </span>
+  </a>
+
+  <nav class="nav-center" aria-label="Admin navigation">
+    <a class="nav-pill <%= active === 'admin-dashboard' ? 'active' : '' %>" href="/admin/dashboard" data-nav-link>Overview</a>
+    <a class="nav-pill <%= active === 'admin-services' ? 'active' : '' %>" href="/admin/services" data-nav-link>Services</a>
+    <a class="nav-pill <%= active === 'admin-appointments' ? 'active' : '' %>" href="/admin/appointments" data-nav-link>Bookings</a>
+    <a class="nav-pill <%= active === 'admin-visits' ? 'active' : '' %>" href="/admin/visits" data-nav-link>Rewards</a>
+    <span class="nav-indicator" data-nav-indicator aria-hidden="true"></span>
+  </nav>
+
+  <div class="nav-actions">
+    <% if (adminUser) { %>
+      <div class="admin-identity" aria-label="Signed in admin">
+        <span class="avatar-chip"><%= adminInitial %></span>
+        <span class="admin-identity-copy">
+          <strong><%= adminDisplayName %></strong>
+          <small>Admin</small>
+        </span>
+      </div>
+      <form action="/admin/logout" method="POST" class="inline-form">
+        <button class="nav-command" type="submit" data-sound-click>Logout</button>
+      </form>
+    <% } %>
+  </div>
+</header>
+
+<nav class="mobile-dock admin-mobile-dock" aria-label="Admin mobile navigation">
+  <a class="dock-link <%= active === 'admin-dashboard' ? 'active' : '' %>" href="/admin/dashboard" data-nav-link>
+    <span class="dock-icon dock-icon-dashboard" aria-hidden="true"></span>
+    <span>Home</span>
+  </a>
+  <a class="dock-link <%= active === 'admin-services' ? 'active' : '' %>" href="/admin/services" data-nav-link>
+    <span class="dock-icon dock-icon-booking" aria-hidden="true"></span>
+    <span>Menu</span>
+  </a>
+  <a class="dock-link <%= active === 'admin-appointments' ? 'active' : '' %>" href="/admin/appointments" data-nav-link>
+    <span class="dock-icon dock-icon-loyalty" aria-hidden="true"></span>
+    <span>Bookings</span>
+  </a>
+  <a class="dock-link <%= active === 'admin-visits' ? 'active' : '' %>" href="/admin/visits" data-nav-link>
+    <span class="dock-icon dock-icon-profile" aria-hidden="true"></span>
+    <span>Rewards</span>
+  </a>
+</nav>

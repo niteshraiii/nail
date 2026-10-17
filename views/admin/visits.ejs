@@ -1,0 +1,144 @@
+<%- include('../partials/head', { title, bodyClass: 'admin-page' }) %>
+<%- include('../partials/admin-nav', { activePage, adminUser }) %>
+<%- include('../partials/flash', { flash }) %>
+
+<main class="app-shell wide-shell">
+  <section class="page-heading" data-reveal>
+    <p class="eyebrow">Visit updater</p>
+    <h1>Attendance and rewards.</h1>
+    <p>Record completed appointments and keep each member's reward journey polished.</p>
+  </section>
+
+  <section class="admin-grid">
+    <section class="glass-panel table-panel" data-card data-reveal>
+      <div class="panel-heading">
+        <h2>Pending Attendance</h2>
+        <span class="badge"><%= pendingVisits.length %> pending</span>
+      </div>
+      <div class="responsive-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Service</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (pendingVisits.length === 0) { %>
+              <tr><td colspan="4">No attended appointments awaiting visit update.</td></tr>
+            <% } %>
+            <% pendingVisits.forEach(function (appointment) { %>
+              <tr>
+                <td>
+                  <strong><%= appointment.customer_name %></strong>
+                  <span class="table-subtext"><%= appointment.customer_email %></span>
+                </td>
+                <td><%= appointment.service_name %></td>
+                <td>
+                  <%= new Date(appointment.appointment_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) %>
+                  <%= String(appointment.appointment_time).slice(0, 5) %>
+                </td>
+                <td>
+                  <form action="/admin/visits/<%= appointment.id %>" method="POST" data-confirm="Record visit for this appointment?">
+                    <button class="small-action" type="submit" data-sound-click>Record Visit</button>
+                  </form>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="glass-panel table-panel" data-card data-reveal>
+      <div class="panel-heading">
+        <h2>Customer Progress</h2>
+        <span class="badge"><%= customerProgress.length %> members</span>
+      </div>
+      <div class="responsive-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Phone</th>
+              <th>Visits</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (customerProgress.length === 0) { %>
+              <tr><td colspan="3">No customers yet.</td></tr>
+            <% } %>
+            <% customerProgress.forEach(function (customer) { %>
+              <tr>
+                <td>
+                  <strong><%= customer.name %></strong>
+                  <span class="table-subtext"><%= customer.email %></span>
+                </td>
+                <td><%= customer.phone || 'Not added' %></td>
+                <td><strong><%= customer.visit_count %></strong></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </section>
+
+  <section class="glass-panel table-panel reward-editor" data-card data-reveal>
+    <div class="panel-heading">
+      <h2>Reward Editor</h2>
+      <span class="badge"><%= rewards.length %> tiers</span>
+    </div>
+
+    <form action="/admin/rewards" method="POST" class="inline-editor">
+      <label class="field">
+        <span>Visits</span>
+        <input type="number" min="1" name="required_visits" required>
+      </label>
+      <label class="field">
+        <span>Reward</span>
+        <input type="text" name="reward_name" required>
+      </label>
+      <button class="btn btn-secondary" type="submit" data-sound-click>Add Reward</button>
+    </form>
+
+    <div class="responsive-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Required Visits</th>
+            <th>Reward Name</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (rewards.length === 0) { %>
+            <tr><td colspan="3">No rewards yet.</td></tr>
+          <% } %>
+          <% rewards.forEach(function (reward) { %>
+            <tr>
+              <td>
+                <form id="reward-<%= reward.id %>" action="/admin/rewards/<%= reward.id %>" method="POST">
+                  <input class="table-input" type="number" min="1" name="required_visits" value="<%= reward.required_visits %>" required>
+                </form>
+              </td>
+              <td>
+                <input class="table-input" form="reward-<%= reward.id %>" type="text" name="reward_name" value="<%= reward.reward_name %>" required>
+              </td>
+              <td class="table-actions">
+                <button class="small-action" form="reward-<%= reward.id %>" type="submit" data-sound-click>Save</button>
+                <form action="/admin/rewards/<%= reward.id %>/delete" method="POST" data-confirm="Delete this reward?">
+                  <button class="small-action danger" type="submit" data-sound-click>Delete</button>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer', { scripts }) %>
