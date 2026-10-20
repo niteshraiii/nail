@@ -12,6 +12,10 @@ const pool = mysql.createPool({
   decimalNumbers: true,
   namedPlaceholders: true
 });
+pool.config.ssl = {
+  minVersion: 'TLSv1.2',
+  rejectUnauthorized: true,
+};
 
 function normalizeValues(values) {
   if (values === undefined) {
